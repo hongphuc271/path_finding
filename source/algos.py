@@ -38,7 +38,6 @@ def DFS(g: SearchSpace, sc: pygame.Surface):
     
     g.stroke_path(path, sc)
 
-
 def BFS(g: SearchSpace, sc: pygame.Surface):
     print('Implement BFS algorithm')
 
@@ -86,7 +85,7 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     visited = [g.start.id]
     queue = [g.start.id]
     father = [-1]*g.get_length()
-    dist = [g.get_length()]*g.get_length()
+    dist = [g.get_length()*14]*g.get_length()
     dist[g.start.id] = 0
 
 
@@ -126,3 +125,61 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
 
     print("Done! Total segments: %d. Calculated length: %d. Actual length: %d"
           % (len(path)-1, dist[g.goal.id], length))
+
+def AStar(g: SearchSpace, sc: pygame.Surface):
+    print('Implement AStar algorithm')
+
+    open_set = [g.start.id]
+    closed_set = []
+    father = [-1]*g.get_length()
+    # G Cost = Chiều dài đường đi từ g.start đến một node
+    # H Cost = Khoảng cách Euclid từ một node đến g.goal
+    gcost = [0]*g.get_length()
+    hcost = [0]*g.get_length()
+
+    def get_fcost(idx : int) -> int:
+        return gcost[idx] + hcost[idx]
+
+    def get_lowest_fcost_id() -> int:
+        lowest_fcost_id = open_set[0]
+        for id in open_set:
+            if get_fcost(id) < get_fcost(lowest_fcost_id):
+                lowest_fcost_id = id
+        return lowest_fcost_id
+
+    while True:
+        current_id = get_lowest_fcost_id()
+        open_set.remove(current_id)
+        closed_set.append(current_id)
+        if current_id == g.goal.id:
+            break
+        g.grid_cells[current_id].set_color(YELLOW, sc)
+        for neighbor in g.get_neighbors(g.grid_cells[current_id]):
+            if neighbor.id in closed_set:
+                continue
+            new_gcost = gcost[current_id] + g.get_distance(current_id, neighbor.id)
+            if new_gcost < gcost[neighbor.id] or not(neighbor.id in open_set):
+                gcost[neighbor.id] = new_gcost
+                hcost[neighbor.id] = g.get_distance(neighbor.id, g.goal.id)
+                father[neighbor.id] = current_id
+                if not (neighbor.id in open_set):
+                    open_set.append(neighbor.id)
+                    g.grid_cells[neighbor.id].set_color(RED, sc)
+        g.grid_cells[current_id].set_color(BLUE, sc)
+    
+    g.start.set_color(ORANGE, sc)
+    g.goal.set_color(PURPLE, sc)
+
+    if father[g.goal.id] == -1:
+        print("No path found")
+    
+    path = [g.goal.id]
+    current_father = father[g.goal.id]
+    while current_father != -1:
+        path.append(current_father)
+        current_father = father[current_father]
+    
+    length = g.stroke_path(path, sc)
+
+    print("Done! Total segments: %d. Calculated length: %d. Actual length: %d"
+          % (len(path)-1, gcost[g.goal.id], length))

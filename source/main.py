@@ -1,6 +1,6 @@
 import pygame
 from maze import SearchSpace
-from algos import DFS, BFS, Dijkstra
+from algos import DFS, BFS, Dijkstra, AStar
 from const import RES, GREY
 import argparse
 
@@ -22,6 +22,8 @@ def main(algo:str):
         BFS(g, sc)
     elif algo == 'Dijkstra':
         Dijkstra(g, sc)
+    elif algo == 'AStar':
+        AStar(g, sc)
     else:
         raise NotImplementedError('Not implemented')
 
