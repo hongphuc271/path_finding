@@ -1,6 +1,6 @@
 import pygame
 from maze import SearchSpace
-from algos import DFS, BFS
+from algos import DFS, BFS, Dijkstra
 from const import RES, GREY
 import argparse
 
@@ -20,6 +20,8 @@ def main(algo:str):
         DFS(g, sc)
     elif algo == 'BFS':
         BFS(g, sc)
+    elif algo == 'Dijkstra':
+        Dijkstra(g, sc)
     else:
         raise NotImplementedError('Not implemented')
 
