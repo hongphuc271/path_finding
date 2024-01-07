@@ -3,7 +3,7 @@ from const import *
 import random
 
 # you can change the random seed but when you submit your work, it should be run on my random seed!
-random.seed(2345)
+# random.seed(2345)
 #random.seed(12345)
 
 class Node:
@@ -36,10 +36,12 @@ class SearchSpace:
                 is_brick = True if random.randint(1,3) == 1 else False
                 self.grid_cells.append(Node(j*(A+A1)+BOUND, i*(A+A1)+BOUND, A, i*COLS+j, is_brick))
 
-        self.start:Node = self.grid_cells[0]
+        rand_start = random.randint(0, ROWS*COLS-1)
+        rand_end = random.randint(0, ROWS*COLS-1)
+        self.start:Node = self.grid_cells[rand_start]
         self.start.is_brick = False
         self.start._set_color(ORANGE)
-        self.goal:Node = self.grid_cells[-1]
+        self.goal:Node = self.grid_cells[rand_end]
         self.goal.is_brick = False
         self.goal._set_color(PURPLE)
 
@@ -93,7 +95,7 @@ class SearchSpace:
         return length
 
     def get_distance(self, node_a_id : int, node_b_id : int) -> int:
-        diff_x = abs(node_a_id/COLS - node_b_id/COLS)
+        diff_x = abs(node_a_id//COLS - node_b_id//COLS)
         diff_y = abs(node_a_id%COLS - node_b_id%COLS)
         if diff_x > diff_y:
             return 14*diff_y + 10*(diff_x-diff_y)
