@@ -15,7 +15,7 @@ def main(algo:str):
     g = SearchSpace()
     g.draw(sc)
     clock.tick(30)
-    print("hello")
+    
     if algo == 'DFS':
         DFS(g, sc)
     elif algo == 'BFS':

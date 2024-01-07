@@ -23,7 +23,7 @@ class Node:
         self.draw(sc)
 
         # change the speed here
-        pygame.time.delay(5)
+        pygame.time.delay(DELAY)
         pygame.display.update()
 
 class SearchSpace:
@@ -75,3 +75,15 @@ class SearchSpace:
                 neighbors.append(self.grid_cells[dir_])
 
         return neighbors
+
+    def stroke_path(self, path : list[int], sc:pygame.Surface):
+        for i in range(len(path)):
+            if i >= len(path) - 1:
+                break
+            node_id = path[i]
+            next_id = path[i+1]
+            start_point = self.grid_cells[node_id].rect.center
+            end_point = self.grid_cells[next_id].rect.center
+            pygame.draw.line(surface = sc, color = WHITE, start_pos=start_point, end_pos=end_point, width=4)
+            pygame.time.delay(DELAY)
+            pygame.display.update()
