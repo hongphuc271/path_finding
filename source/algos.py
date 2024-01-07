@@ -72,7 +72,9 @@ def BFS(g: SearchSpace, sc: pygame.Surface):
         path.append(current_father)
         current_father = father[current_father]
     
-    g.stroke_path(path, sc)
+    length = g.stroke_path(path, sc)
+
+    print("Done! Total segments: %d. Total length: %d" % (len(path)-1, length))
 
 def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     print('Implement Dijkstra algorithm')
@@ -83,13 +85,14 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     dist = [g.get_length()]*g.get_length()
     dist[g.start.id] = 0
 
+
     while len(queue) > 0:
         node_id = queue.pop(0)
         g.grid_cells[node_id].set_color(YELLOW, sc)
         for neighbor in g.get_neighbors(g.grid_cells[node_id]):
             if not (neighbor.id in visited) and \
-                dist[neighbor.id] > dist[node_id] + get_distance(node_id, neighbor.id):
-                dist[neighbor.id] = dist[node_id] + get_distance(node_id, neighbor.id)
+                dist[neighbor.id] > dist[node_id] + g.get_distance(node_id, neighbor.id):
+                dist[neighbor.id] = dist[node_id] + g.get_distance(node_id, neighbor.id)
                 visited.append(neighbor.id)
                 queue.append(neighbor.id)
                 queue.sort(key=lambda i:dist[i])
@@ -111,11 +114,7 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
         path.append(current_father)
         current_father = father[current_father]
     
-    g.stroke_path(path, sc)
+    length = g.stroke_path(path, sc)
 
-def get_distance(node_a_id : int, node_b_id : int) -> int:
-    diff_x = abs(node_a_id/COLS - node_b_id/COLS)
-    diff_y = abs(node_a_id%COLS - node_b_id%COLS)
-    if diff_x > diff_y:
-        return 14*diff_y + 10*(diff_x-diff_y)
-    return 14*diff_x + 10*(diff_y-diff_x)
+    print("Done! Total segments: %d. Calculated length: %d. Actual length: %d"
+          % (len(path)-1, dist[g.goal.id], length))

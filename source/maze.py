@@ -3,7 +3,8 @@ from const import *
 import random
 
 # you can change the random seed but when you submit your work, it should be run on my random seed!
-random.seed(2345)
+# random.seed(2345)
+random.seed(12345)
 
 class Node:
     def __init__(self, x, y, a, id, is_brick=False) -> None:
@@ -35,10 +36,10 @@ class SearchSpace:
                 is_brick = True if random.randint(1,3) == 1 else False
                 self.grid_cells.append(Node(j*(A+A1)+BOUND, i*(A+A1)+BOUND, A, i*COLS+j, is_brick))
 
-        self.start:Node = self.grid_cells[0]
+        self.start:Node = self.grid_cells[25]
         self.start.is_brick = False
         self.start._set_color(ORANGE)
-        self.goal:Node = self.grid_cells[-1]
+        self.goal:Node = self.grid_cells[41]
         self.goal.is_brick = False
         self.goal._set_color(PURPLE)
 
@@ -76,14 +77,24 @@ class SearchSpace:
 
         return neighbors
 
-    def stroke_path(self, path : list[int], sc:pygame.Surface):
+    def stroke_path(self, path : list[int], sc:pygame.Surface) -> int:
+        length = 0
         for i in range(len(path)):
             if i >= len(path) - 1:
                 break
             node_id = path[i]
             next_id = path[i+1]
+            length += self.get_distance(node_id, next_id)
             start_point = self.grid_cells[node_id].rect.center
             end_point = self.grid_cells[next_id].rect.center
             pygame.draw.line(surface = sc, color = WHITE, start_pos=start_point, end_pos=end_point, width=4)
             pygame.time.delay(DELAY)
             pygame.display.update()
+        return length
+
+    def get_distance(self, node_a_id : int, node_b_id : int) -> int:
+        diff_x = abs(node_a_id/COLS - node_b_id/COLS)
+        diff_y = abs(node_a_id%COLS - node_b_id%COLS)
+        if diff_x > diff_y:
+            return 14*diff_y + 10*(diff_x-diff_y)
+        return 14*diff_x + 10*(diff_y-diff_x)
