@@ -36,12 +36,10 @@ class SearchSpace:
                 is_brick = True if random.randint(1,3) == 1 else False
                 self.grid_cells.append(Node(j*(A+A1)+BOUND, i*(A+A1)+BOUND, A, i*COLS+j, is_brick))
 
-        rand_start = random.randint(0, ROWS*COLS-1)
-        rand_end = random.randint(0, ROWS*COLS-1)
-        self.start:Node = self.grid_cells[rand_start]
+        self.start:Node = self.grid_cells[0]
         self.start.is_brick = False
         self.start._set_color(ORANGE)
-        self.goal:Node = self.grid_cells[rand_end]
+        self.goal:Node = self.grid_cells[-1]
         self.goal.is_brick = False
         self.goal._set_color(PURPLE)
 
@@ -59,7 +57,7 @@ class SearchSpace:
     def get_neighbors(self, node: Node) -> list[Node]:
         x, y = node.id%COLS, node.id//COLS
 
-        # define the directions of agent
+        #define the directions of agent
         up    = (y-1)*COLS + x if y-1 >= 0 else None
         down  = (y+1)*COLS + x if y+1 < ROWS else None
         left  = y*COLS + (x-1) if x-1 >= 0 else None
@@ -71,7 +69,8 @@ class SearchSpace:
         right_down = (y+1)*COLS + (x+1) if y+1 < ROWS and x+1 < COLS else None
 
         directions = [up, down, left, right, left_up, left_down, right_up, right_down]
-        # directions = [up, down, left, right]
+        #directions = [up, down, left, right]
+        #directions = [left_up, left_down, right_up, right_down]
         neighbors = []
         for dir_ in directions:
             if dir_ is not None and not self.grid_cells[dir_].is_brick:

@@ -158,7 +158,7 @@ def AStar(g: SearchSpace, sc: pygame.Surface):
                 lowest_fcost_id = id
         return lowest_fcost_id
 
-    while True:
+    while len(open_set)>0:
         current_id = get_lowest_fcost_id()
         open_set.remove(current_id)
         closed_set.append(current_id)
