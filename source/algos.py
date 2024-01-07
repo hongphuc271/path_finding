@@ -49,6 +49,7 @@ def BFS(g: SearchSpace, sc: pygame.Surface):
     while len(queue) > 0:
         node_id = queue.pop(0)
         g.grid_cells[node_id].set_color(YELLOW, sc)
+        goal_found = False
         for neighbor in g.get_neighbors(g.grid_cells[node_id]):
             if not (neighbor.id in visited):
                 visited.append(neighbor.id)
@@ -56,8 +57,11 @@ def BFS(g: SearchSpace, sc: pygame.Surface):
                 g.grid_cells[neighbor.id].set_color(BLUE, sc)
                 father[neighbor.id] = node_id
                 if neighbor == g.goal:
+                    goal_found = True
                     break
         g.grid_cells[node_id].set_color(BLUE, sc)
+        if goal_found:
+            break
     
     g.start.set_color(ORANGE, sc)
     g.goal.set_color(PURPLE, sc)
@@ -89,6 +93,7 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     while len(queue) > 0:
         node_id = queue.pop(0)
         g.grid_cells[node_id].set_color(YELLOW, sc)
+        goal_found = False
         for neighbor in g.get_neighbors(g.grid_cells[node_id]):
             if not (neighbor.id in visited) and \
                 dist[neighbor.id] > dist[node_id] + g.get_distance(node_id, neighbor.id):
@@ -99,8 +104,11 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
                 g.grid_cells[neighbor.id].set_color(BLUE, sc)
                 father[neighbor.id] = node_id
                 if neighbor == g.goal:
+                    goal_found = True
                     break
         g.grid_cells[node_id].set_color(BLUE, sc)
+        if goal_found:
+            break
     
     g.start.set_color(ORANGE, sc)
     g.goal.set_color(PURPLE, sc)
