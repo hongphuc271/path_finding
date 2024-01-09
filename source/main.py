@@ -5,7 +5,7 @@ from const import RES, GREY
 import argparse
 
 def main(algo:str):
-    your_name = 'Hong Phuc- Anh Quan'
+    your_name = '[Hồng Phúc & Anh Quân]'
     pygame.init()
     pygame.display.set_caption(f'{your_name} - {algo}')
     sc = pygame.display.set_mode(RES)
