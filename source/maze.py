@@ -39,7 +39,7 @@ class SearchSpace:
         self.start:Node = self.grid_cells[0]
         self.start.is_brick = False
         self.start._set_color(ORANGE)
-        self.goal:Node = self.grid_cells[55]
+        self.goal:Node = self.grid_cells[-1]
         self.goal.is_brick = False
         self.goal._set_color(PURPLE)
 
