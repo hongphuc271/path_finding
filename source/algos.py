@@ -20,7 +20,7 @@ def DFS(g: SearchSpace, sc: pygame.Surface):
         if node_id != g.start.id:
             g.grid_cells[node_id].set_color(YELLOW, sc)
         for neighbor in g.get_neighbors(g.grid_cells[node_id]):
-            if not (neighbor.id in closed_set) and not (neighbor.id in open_set):
+            if not (neighbor.id in closed_set):
                 open_set.insert(0, neighbor.id)
                 father[neighbor.id] = node_id
                 if neighbor.id != g.goal.id:
