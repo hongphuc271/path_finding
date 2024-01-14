@@ -97,6 +97,7 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     dist[g.start.id] = 0
 
     while len(open_set) > 0:
+        open_set.sort(key=lambda i:dist[i])
         node_id = open_set.pop(0)
         if node_id == g.goal.id:
             g.grid_cells[node_id].set_color(PURPLE, sc)
@@ -104,11 +105,13 @@ def Dijkstra(g: SearchSpace, sc: pygame.Surface):
         if node_id != g.start.id:
             g.grid_cells[node_id].set_color(YELLOW, sc)
         for neighbor in g.get_neighbors(g.grid_cells[node_id]):
-            if not (neighbor.id in closed_set) and not (neighbor.id in open_set) and \
-                dist[neighbor.id] > dist[node_id] + get_distance(node_id, neighbor.id):
-                dist[neighbor.id] = dist[node_id] + get_distance(node_id, neighbor.id)
-                open_set.append(neighbor.id)
-                open_set.sort(key=lambda i:dist[i])
+            if neighbor.id in closed_set:
+                continue
+            new_dst = dist[node_id] + get_distance(node_id, neighbor.id)
+            if new_dst < dist[neighbor.id] or  not (neighbor.id in open_set):
+                dist[neighbor.id] = new_dst
+                if not (neighbor.id in open_set):
+                    open_set.append(neighbor.id)
                 father[neighbor.id] = node_id
                 g.grid_cells[neighbor.id].set_color(RED, sc)
         closed_set.append(node_id)
