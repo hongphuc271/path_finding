@@ -210,6 +210,7 @@ def stroke_path(g : SearchSpace, path : list[int], sc:pygame.Surface) -> int:
             pygame.display.update()
         return length
 
+#Refs: https://github.com/SebLague/Pathfinding/blob/master/Episode%2003%20-%20astar/Assets/Scripts/Pathfinding.cs
 def get_distance(node_a_id : int, node_b_id : int) -> int:
     diff_x = abs(node_a_id//COLS - node_b_id//COLS)
     diff_y = abs(node_a_id%COLS - node_b_id%COLS)
