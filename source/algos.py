@@ -81,7 +81,7 @@ def BFS(g: SearchSpace, sc: pygame.Surface):
     
     length = stroke_path(g, path, sc)
 
-    print("Done! Total segments: %d. Total length: %d" % (len(path)-1, length))
+    print("Done! Total segments: %d. Calculated length: %d. Actual length: %d" % (len(path)-1, (len(path)-1) * 10,  length))
 
 def Dijkstra(g: SearchSpace, sc: pygame.Surface):
     if (g.start.id == g.goal.id):
